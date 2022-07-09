@@ -11,8 +11,9 @@ public enum SimpleHttpApi {
     POST_METHOD("POST"),
     RESPONSE_STATUS_200("200"),
     RESPONSE_STATUS_500("500"),
-    REQUEST_STATUS_400("400"),
-    ERROR("ERROR");
+    RESPONSE_STATUS_204("204"),
+
+    ERROR("");
 
     private final String api;
 

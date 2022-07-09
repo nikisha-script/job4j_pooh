@@ -17,18 +17,15 @@ public class QueueServiceImpl implements Service {
 
     @Override
     public Resp process(Request req) {
-        Resp resp = new Resp(SimpleHttpApi.ERROR.getApi(), SimpleHttpApi.REQUEST_STATUS_400.getApi());
+        Resp resp = new Resp(SimpleHttpApi.ERROR.getApi(), SimpleHttpApi.RESPONSE_STATUS_500.getApi());
         if (post.equals(req.getHttpRequestType())) {
             queueMap.putIfAbsent(req.getSourceName(), new ConcurrentLinkedQueue<>());
             String text = req.getParam();
             queueMap.get(req.getSourceName()).add(text);
             resp = new Resp(text, SimpleHttpApi.RESPONSE_STATUS_200.getApi());
-        } else if (get.equals(req.getHttpRequestType())) {
-            if (queueMap.get(req.getSourceName()) == null) {
-                return resp;
-            }
+        } else if (get.equals(req.getHttpRequestType()) && !(queueMap.get(req.getSourceName()) == null)) {
             String text = Optional.ofNullable(queueMap.get(req.getSourceName()).poll()).orElse("");
-            return text.isEmpty() ? resp : new Resp(text, SimpleHttpApi.RESPONSE_STATUS_200.getApi());
+            resp = text.isEmpty() ? resp : new Resp(text, SimpleHttpApi.RESPONSE_STATUS_200.getApi());
         }
         return resp;
     }

@@ -18,7 +18,7 @@ public class Request {
         String[] detailRequest = content.split(System.lineSeparator());
         String[] firstLine = detailRequest[0].split("/");
         String type = firstLine[0].trim();
-        String poohMode = firstLine[1].trim();
+        String poohMode = firstLine[1];
         String source = firstLine[2].trim().split(" ")[0];
         String param = "POST".equals(type) ? detailRequest[detailRequest.length - 1] : firstLine.length > 4 ? firstLine[3].trim().split(" ")[0] : "";
         return new Request(type, poohMode, source, param);
